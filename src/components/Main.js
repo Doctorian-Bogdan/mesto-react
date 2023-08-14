@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect }  from 'react';
 import api from "../utils/Api";
 import Card from "./Card";
 
@@ -8,17 +8,17 @@ function Main({
   onEditAvatar,
   onCardClick
 }) {
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState('');
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
 
-  const [cards, setCards] = React.useState([]);
+  const [cards, setCards] = useState([]);
 
   const initialCards = cards.map((card) => {
-    return new Card(card, onCardClick)
+    return Card(card, onCardClick)
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getUserInfo()
       .then((res) => {
         setUserAvatar(res.avatar)
@@ -49,14 +49,12 @@ function Main({
           <div className="profile__about">
             <div className="profile__container">
               <h1 className="profile__name">{userName}</h1>
-              <button className="profile__edit-btn" type="button" onClick={onEditProfile}></button>
+              <button className="profile__edit-btn" type="button" onClick={onEditProfile} />
             </div>
             <p className="profile__bio">{userDescription}</p>
           </div>
         </div>
-        <button className="profile__button" type="button" onClick={onAddPlace}>
-
-        </button>
+        <button className="profile__button" type="button" onClick={onAddPlace} />
       </section>
       <section className="gallery">
         {initialCards}

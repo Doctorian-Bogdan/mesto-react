@@ -6,7 +6,7 @@ function Card(card, onCardClick) {
   }
 
   return (
-    <div className="gallery__card">
+    <div className="gallery__card" key={card._id}>
       <img className="gallery__image" onClick={handleClick} src={card.link} alt={card.name}/>
       <div className="gallery__image-info">
         <h2 className="gallery__title">
