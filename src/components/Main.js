@@ -14,9 +14,13 @@ function Main({
 
   const [cards, setCards] = useState([]);
 
-  const initialCards = cards.map((card) => {
-    return Card(card, onCardClick)
-  })
+  const initialCards = cards.map((card) => (
+    <Card
+      card={card}
+      key={card._id}
+      onCardClick={onCardClick}
+    />
+    ));
 
   useEffect(() => {
     api.getUserInfo()

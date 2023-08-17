@@ -1,12 +1,12 @@
 import React from "react";
 
-function Card(card, onCardClick) {
+function Card({ card, key, onCardClick }) {
   function handleClick() {
     onCardClick(card);
   }
 
   return (
-    <div className="gallery__card" key={card._id}>
+    <div className="gallery__card" key={key}>
       <img className="gallery__image" onClick={handleClick} src={card.link} alt={card.name}/>
       <div className="gallery__image-info">
         <h2 className="gallery__title">
