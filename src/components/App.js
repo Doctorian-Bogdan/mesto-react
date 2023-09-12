@@ -10,6 +10,7 @@ import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import AddPlacePopup from "./AddPlacePopup";
 import DeletePopup from "./DeletePopup";
+import Loader from "./Loader";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -22,7 +23,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
+  const [isLoaderOpen, setLoaderOpen] = useState(false);
+
   useEffect(() => {
+    setLoaderOpen(true);
+
     api.getUserInfo()
       .then((res) => {
         setCurrentUser(res)
@@ -30,12 +35,18 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
+      .finally(() => {
+        setLoaderOpen(false);
+      })
     api.getInitialCards()
       .then((res) => {
         setCards(res)
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
+      })
+      .finally(() => {
+        setLoaderOpen(false);
       })
   }, [])
 
@@ -71,6 +82,7 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
+    setLoaderOpen(true);
 
     if(!isLiked) {
       api.setLike(card._id)
@@ -80,6 +92,9 @@ function App() {
         .catch((err) => {
           console.log(`Ошибка: ${err}`)
         })
+        .finally(() => {
+          setLoaderOpen(false);
+        })
     } else {
       api.deleteLike(card._id)
         .then((newCard) => {
@@ -88,10 +103,15 @@ function App() {
         .catch((err) => {
           console.log(`Ошибка: ${err}`)
         })
+        .finally(() => {
+          setLoaderOpen(false);
+        })
     }
   }
 
   function handleCardDelete(card) {
+    setLoaderOpen(true);
+
     api.deleteCard(card._id)
       .then(() => {
         setCards((cards) => cards.filter((c) => c._id !== card._id));
@@ -100,9 +120,14 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
+      .finally(() => {
+        setLoaderOpen(false);
+      })
   }
 
   function handleUpdateUser({name, about}) {
+    setLoaderOpen(true);
+
     api.editUserInfo(name, about)
       .then((userInfo) => {
         setCurrentUser(userInfo);
@@ -111,9 +136,14 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
+      .finally(() => {
+        setLoaderOpen(false);
+      })
   }
 
   function handleUpdateAvatar({ avatar }) {
+    setLoaderOpen(true);
+
     api.updateProfilePicture(avatar)
       .then((userInfo) => {
         setCurrentUser(userInfo);
@@ -122,9 +152,14 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
+      .finally(() => {
+        setLoaderOpen(false);
+      })
   }
 
   function handleAddPlace({ name, link }) {
+    setLoaderOpen(true);
+
     api.addNewCard(name, link)
       .then((res) => {
         setCards([res, ...cards]);
@@ -132,6 +167,9 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
+      })
+      .finally(() => {
+        setLoaderOpen(false);
       })
   }
 
@@ -180,6 +218,10 @@ function App() {
         <ImagePopup
           card={selectedCard}
           onClose={closeAllPopups}
+        />
+
+        <Loader
+          isOpen={isLoaderOpen}
         />
       </div>
     </CurrentUserContext.Provider>

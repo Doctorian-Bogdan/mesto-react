@@ -1,7 +1,7 @@
 import React, {useContext, useRef, useState} from "react";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-function Card({ card, key, onCardClick, onCardLike, onCardDeleteClick }) {
+function Card({ card, onCardClick, onCardLike, onCardDeleteClick }) {
   const currentUser = useContext(CurrentUserContext);
   const [isBadImage, setBadImage] = useState(false);
   const imgRef = useRef();
@@ -35,7 +35,7 @@ function Card({ card, key, onCardClick, onCardLike, onCardDeleteClick }) {
   }
 
   return (
-    <div className="gallery__card" key={key}>
+    <div className="gallery__card">
       <img className="gallery__image" onClick={handleClick} onError={handleError} ref={imgRef} src={card.link} alt={card.name}/>
       <div className="gallery__image-info">
         <h2 className="gallery__title">

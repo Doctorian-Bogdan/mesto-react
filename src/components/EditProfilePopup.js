@@ -27,7 +27,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   useEffect(() =>{
     setName(currentUser.name);
     setDescription(currentUser.about);
-  },[currentUser])
+  },[currentUser, isOpen])
 
   return (
     <PopupWithForm
@@ -44,7 +44,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           className="popup__input"
           id="nameInput"
           name="name"
-          value={name}
+          value={name || ''}
           onChange={handleNameChange}
           placeholder="Ваше имя"
           minLength="2"
@@ -57,7 +57,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           className="popup__input"
           id="bioInput"
           name="bio"
-          value={description}
+          value={description || ''}
           onChange={handleDescriptionChange}
           placeholder="Ваш род деятельности"
           minLength="2"
